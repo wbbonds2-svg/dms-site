@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Digital Music Systems (DMS) — Jukeboxes · ATMs · Games · Seattle, WA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+:root{--nv:#022e63;--nd:#011d40;--nm:#03398a;--gd:#f0a500;--gl:#ffc845;--gr:#8a92a0;--tx:#1a2030;--bd:#e0e4ec;--of:#f5f6f8;--rd:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;color:var(--tx);overflow-x:hidden}
+a{text-decoration:none}
+.topbar{background:var(--nd);color:#fff;text-align:center;padding:8px 20px;font-size:13px}
+.topbar a{color:var(--gl);font-weight:600}
+nav{position:sticky;top:0;z-index:100;background:var(--nv);box-shadow:0 2px 20px rgba(0,0,0,.25)}
+.ni{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.logo{display:flex;align-items:center;gap:10px;padding:12px 0;cursor:pointer}
+.lm{width:36px;height:36px;background:var(--gd);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--nd)}
+.lt{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;letter-spacing:2px;line-height:1}
+.ls{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px}
+.nl{display:flex;list-style:none;gap:0}
+.nl a{display:block;color:rgba(255,255,255,.75);font-size:11px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;padding:17px 8px;border-bottom:3px solid transparent;transition:.2s;cursor:pointer}
+.nl a:hover,.nl a.on{color:var(--gl);border-bottom-color:var(--gd)}
+.ncta{background:var(--gd);color:var(--nd);font-size:13px;font-weight:700;padding:9px 16px;border-radius:8px;cursor:pointer;margin-left:8px;white-space:nowrap;border:none;font-family:inherit}
+.ncta:hover{background:var(--gl)}
+.hbg{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:8px}
+.hbg span{display:block;width:22px;height:2px;background:#fff;border-radius:2px}
+.mob{display:none;background:var(--nd);padding:14px 20px}
+.mob a{display:block;color:rgba(255,255,255,.8);font-size:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:pointer}
+.mob a:last-child{border:none;color:var(--gl)}
+@media(max-width:900px){.nl{display:none}.ncta{display:none}.hbg{display:flex}.mob.open{display:block}}
+.pg{display:none}.pg.on{display:block}
+.hero{background:linear-gradient(135deg,var(--nd),var(--nv) 50%,var(--nm));min-height:88vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='0.04'%3E%3Cpath d='M0 0h20v20H0zM20 20h20v20H20z'/%3E%3C/g%3E%3C/svg%3E")}
+.hi{max-width:1200px;margin:0 auto;padding:72px 20px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;position:relative;z-index:1;width:100%}
+@media(max-width:768px){.hi{grid-template-columns:1fr;gap:32px}}
+.eye{display:inline-block;background:rgba(240,165,0,.15);color:var(--gl);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:5px 13px;border-radius:20px;margin-bottom:18px;border:1px solid rgba(240,165,0,.3)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,84px);color:#fff;line-height:.95;letter-spacing:2px;margin-bottom:22px}
+.hero h1 span{color:var(--gd)}
+.hd{font-size:16px;color:rgba(255,255,255,.68);line-height:1.7;margin-bottom:32px;font-weight:300}
+.hbtns{display:flex;gap:12px;flex-wrap:wrap}
+.hnews{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--rd);padding:24px}
+.hnews h3{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--gl);letter-spacing:2px;margin-bottom:14px}
+.ni2{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);align-items:flex-start}
+.ni2:last-child{border:none;padding-bottom:0}
+.nd2{width:7px;height:7px;background:var(--gd);border-radius:50%;margin-top:5px;flex-shrink:0}
+.ni2 p{font-size:13px;color:rgba(255,255,255,.72);line-height:1.5}
+.hstats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin-top:32px}
+.st{background:rgba(255,255,255,.05);padding:18px;text-align:center}
+.sn{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gd);line-height:1}
+.sl{font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.sec{padding:64px 20px}.si{max-width:1200px;margin:0 auto}
+.soff{background:var(--of)}.sdk{background:linear-gradient(135deg,var(--nd),var(--nv))}
+.slbl{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gd);margin-bottom:8px;display:block}
+.stit{font-family:'DM Serif Display',serif;font-size:clamp(24px,4vw,40px);color:var(--nv);line-height:1.2;margin-bottom:14px}
+.stit.w{color:#fff}
+.sbdy{font-size:15px;color:var(--gr);line-height:1.75;max-width:540px}
+.sbdy.w{color:rgba(255,255,255,.68)}
+.div{width:44px;height:3px;background:var(--gd);border-radius:2px;margin-bottom:22px}
+.ph{background:linear-gradient(135deg,var(--nd),var(--nm));padding:60px 20px 68px;position:relative;overflow:hidden}
+.ph::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:36px;background:#fff;clip-path:ellipse(55% 100% at 50% 100%)}
+.phi{max-width:1200px;margin:0 auto}
+.phi h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,6vw,64px);color:#fff;letter-spacing:3px;margin-bottom:10px}
+.phi p{font-size:16px;color:rgba(255,255,255,.62);max-width:520px;font-weight:300}
+.cg{display:grid;gap:18px;margin-top:40px}
+.cg2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.cg3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:#fff;border-radius:var(--rd);border:1px solid var(--bd);padding:24px;transition:.25s;display:block;color:inherit}
+.card:hover{box-shadow:0 12px 40px rgba(2,46,99,.14);transform:translateY(-2px);border-color:transparent}
+.ci{width:48px;height:48px;background:rgba(2,46,99,.07);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+.card h3{font-family:'DM Serif Display',serif;font-size:18px;color:var(--nv);margin-bottom:8px}
+.card p{font-size:13px;color:var(--gr);line-height:1.6}
+.card ul{list-style:none;margin-top:10px}
+.card ul li{font-size:13px;color:var(--gr);padding:4px 0;display:flex;gap:7px}
+.card ul li::before{content:'✓';color:var(--gd);font-weight:700;flex-shrink:0}
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.tc.fl{direction:rtl}.tc.fl>*{direction:ltr}
+@media(max-width:768px){.tc{grid-template-columns:1fr;gap:28px}.tc.fl{direction:ltr}}
+.fiw{border-radius:16px;background:var(--of);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:72px;border:1px solid var(--bd)}
+.cl{list-style:none;margin-top:18px}
+.cl li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:14px;color:var(--tx);border-bottom:1px solid var(--bd)}
+.cl li:last-child{border:none}
+.ck{width:20px;height:20px;background:var(--nv);border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:11px;flex-shrink:0;margin-top:1px}
+.bp{background:var(--gd);color:var(--nd);font-size:14px;font-weight:700;padding:12px 24px;border-radius:10px;display:inline-block;border:none;cursor:pointer;font-family:inherit;transition:.2s}
+.bp:hover{background:var(--gl);transform:translateY(-1px)}
+.bo{background:transparent;color:#fff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:10px;display:inline-block;border:1.5px solid rgba(255,255,255,.32);transition:.2s;cursor:pointer;font-family:inherit}
+.bo:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.ctab{background:linear-gradient(90deg,var(--nd),var(--nm));padding:52px 20px;text-align:center}
+.ctab h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,5vw,50px);color:#fff;letter-spacing:2px;margin-bottom:8px}
+.ctab p{font-size:15px;color:rgba(255,255,255,.62);margin-bottom:24px}
+.ctab a,.ctab button{margin:0 6px 10px;display:inline-block}
+.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:40px}
+.tc2{background:#fff;border-radius:var(--rd);padding:28px;border:1px solid var(--bd);position:relative}
+.tc2::before{content:'"';font-family:'DM Serif Display',serif;font-size:72px;color:var(--gd);line-height:1;position:absolute;top:12px;right:20px;opacity:.2}
+.tc2 p{font-size:14px;color:var(--tx);line-height:1.72;font-style:italic;margin-bottom:16px}
+.ta{font-size:13px;font-weight:600;color:var(--nv)}
+.tb{font-size:12px;color:var(--gr)}
+.fg{margin-bottom:36px}
+.fgt{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--nv);letter-spacing:1.5px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.fgt::after{content:'';flex:1;height:1px;background:var(--bd)}
+.fi{border-bottom:1px solid var(--bd)}
+.fq{width:100%;text-align:left;background:none;border:none;padding:16px 0;font-size:14px;font-weight:600;color:var(--tx);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:inherit}
+.fq:hover{color:var(--nv)}
+.fq .ar{color:var(--gd);font-size:16px;transition:transform .25s}
+.fq.op .ar{transform:rotate(180deg)}
+.fa{max-height:0;overflow:hidden;transition:max-height .3s}
+.fa.op{max-height:400px}
+.fa p{font-size:14px;color:var(--gr);line-height:1.68;padding-bottom:16px}
+.cgrid{display:grid;grid-template-columns:1fr 1.3fr;gap:40px;margin-top:40px}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}}
+.cic{background:var(--nv);border-radius:var(--rd);padding:32px;color:#fff}
+.cic h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;color:var(--gl);margin-bottom:20px}
+.cr{display:flex;gap:12px;margin-bottom:18px;align-items:flex-start}
+.cico{width:38px;height:38px;background:rgba(240,165,0,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cr strong{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.45);display:block;margin-bottom:3px}
+.cr a,.cr p{font-size:14px;color:#fff}
+.cr a:hover{color:var(--gl)}
+.cfw{background:var(--of);border-radius:var(--rd);padding:32px;border:1px solid var(--bd)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.fr{grid-template-columns:1fr}}
+.fg2{margin-bottom:14px}
+.fg2 label{display:block;font-size:13px;font-weight:600;color:var(--nv);margin-bottom:5px}
+.fg2 input,.fg2 select,.fg2 textarea{width:100%;font-size:14px;padding:10px 13px;border:1.5px solid var(--bd);border-radius:9px;background:#fff;color:var(--tx);font-family:inherit;outline:none;transition:.2s}
+.fg2 input:focus,.fg2 select:focus,.fg2 textarea:focus{border-color:var(--nv)}
+.fg2 textarea{min-height:88px;resize:vertical}
+.fsub{width:100%;padding:13px;background:var(--nv);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s}
+.fsub:hover{background:var(--nm)}
+.badge{display:inline-flex;align-items:center;background:rgba(240,165,0,.1);color:var(--gd);font-size:12px;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid rgba(240,165,0,.22)}
+footer{background:var(--nd);color:rgba(255,255,255,.55)}
+.fi2{max-width:1200px;margin:0 auto;padding:48px 20px 28px;display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:36px}
+@media(max-width:768px){.fi2{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.fi2{grid-template-columns:1fr}}
+.fb p{font-size:13px;line-height:1.68;margin-top:10px;max-width:240px}
+.fc h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gl);margin-bottom:12px}
+.fc a{display:block;font-size:13px;color:rgba(255,255,255,.5);padding:3px 0;transition:.2s;cursor:pointer}
+.fc a:hover{color:#fff}
+.fbot{border-top:1px solid rgba(255,255,255,.07)}
+.fboti{max-width:1200px;margin:0 auto;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:11px}
+/* PORTAL */
+.pw{min-height:calc(100vh - 120px);background:#0d1117}
+.plw{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 120px);background:linear-gradient(135deg,#0d1117,#011d40);padding:20px}
+.plc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:44px 36px;width:100%;max-width:400px}
+.pll{text-align:center;margin-bottom:28px}
+.plm{width:52px;height:52px;background:var(--gd);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--nd);margin-bottom:10px}
+.plc h2{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:2px}
+.plc .sub{font-size:13px;color:rgba(255,255,255,.38);margin-top:3px}
+.pf{margin-bottom:16px}
+.pf label{display:block;font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:7px}
+.pf input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.09);border-radius:9px;padding:12px 15px;color:#fff;font-size:14px;font-family:inherit;outline:none;transition:.2s}
+.pf input:focus{border-color:var(--gd)}
+.pf input::placeholder{color:rgba(255,255,255,.2)}
+.plb{width:100%;background:var(--gd);color:var(--nd);font-size:14px;font-weight:700;padding:13px;border-radius:9px;border:none;cursor:pointer;font-family:inherit;transition:.2s;margin-top:4px}
+.plb:hover{background:var(--gl)}
+.perr{background:rgba(220,50,50,.14);border:1px solid rgba(220,50,50,.28);color:#ff8080;font-size:13px;padding:10px 14px;border-radius:9px;margin-bottom:14px;display:none}
+.perr.on{display:block}
+.pdemo{margin-top:20px;padding:12px;background:rgba(255,255,255,.03);border-radius:9px;border:1px solid rgba(255,255,255,.06);font-size:11px;color:rgba(255,255,255,.3);text-align:center}
+.pdemo table{width:100%;margin-top:7px;font-size:12px}
+.pdemo td{color:rgba(255,255,255,.42);padding:2px 0}
+.pdemo td:first-child{color:rgba(255,255,255,.25);width:52px}
+.pdash{display:none}
+.pdh{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07);padding:0 20px}
+.pdhi{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;flex-wrap:wrap;gap:8px}
+.pdb2{display:flex;align-items:center;gap:8px}
+.pbm{width:32px;height:32px;background:var(--gd);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--nd)}
+.pbn{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#fff;letter-spacing:2px}
+.pbs{font-size:10px;color:rgba(255,255,255,.28);letter-spacing:1px}
+.pdacts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pdun{font-size:13px;color:rgba(255,255,255,.48)}
+.gbtn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.55);font-size:12px;padding:6px 13px;border-radius:7px;cursor:pointer;font-family:inherit;transition:.2s}
+.gbtn:hover{background:rgba(255,255,255,.12);color:#fff}
+.abtn{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.22);color:var(--gl);font-size:12px;padding:6px 13px;border-radius:7px;cursor:pointer;font-family:inherit}
+.pdbody{max-width:1060px;margin:0 auto;padding:32px 20px}
+.ptabs{display:flex;gap:3px;margin-bottom:28px;background:rgba(255,255,255,.03);padding:5px;border-radius:10px;border:1px solid rgba(255,255,255,.07);width:fit-content}
+.ptab{padding:9px 20px;border-radius:7px;font-size:13px;font-weight:500;color:rgba(255,255,255,.42);cursor:pointer;transition:.2s;border:none;background:none;font-family:inherit}
+.ptab.on{background:var(--gd);color:var(--nd);font-weight:700}
+.ptab:hover:not(.on){color:#fff;background:rgba(255,255,255,.06)}
+.ppan{display:none}.ppan.on{display:block}
+.upz{border:2px dashed rgba(255,255,255,.12);border-radius:14px;padding:44px 20px;text-align:center;cursor:pointer;transition:.2s;position:relative;background:rgba(255,255,255,.02)}
+.upz:hover,.upz.ov{border-color:var(--gd);background:rgba(240,165,0,.04)}
+.upz input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.upp{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px 22px;margin-top:14px;display:none}
+.ptrack{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin-top:9px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--gd),var(--gl));border-radius:3px;width:0%;transition:width .3s}
+.uok{background:rgba(30,180,100,.1);border:1px solid rgba(30,180,100,.22);border-radius:10px;padding:12px 18px;margin-top:10px;display:none;align-items:center;gap:9px;color:#5dde9a;font-size:13px;font-weight:500}
+.vg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.vc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;cursor:pointer;transition:.22s}
+.vc:hover{border-color:rgba(240,165,0,.38);transform:translateY(-2px)}
+.vth{aspect-ratio:16/9;background:linear-gradient(135deg,rgba(2,46,99,.8),rgba(3,57,138,.5));display:flex;align-items:center;justify-content:center;font-size:36px;position:relative}
+.vtho{position:absolute;inset:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s}
+.vc:hover .vtho{opacity:1}
+.vpc{width:44px;height:44px;background:rgba(240,165,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+.vinfo{padding:12px}
+.vtit{font-size:13px;font-weight:600;color:#fff;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vmet{font-size:11px;color:rgba(255,255,255,.3);display:flex;gap:9px}
+.vup{font-size:11px;color:rgba(255,255,255,.38);margin-top:2px}
+.emp{text-align:center;padding:52px 20px;color:rgba(255,255,255,.26)}
+.emp span{font-size:48px;display:block;margin-bottom:12px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.minn{background:#0d1117;border:1px solid rgba(255,255,255,.08);border-radius:18px;width:100%;max-width:760px;overflow:hidden}
+.mhdr{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid rgba(255,255,255,.07)}
+.mhdr span{font-size:15px;font-weight:600;color:#fff}
+.mcls{background:rgba(255,255,255,.06);border:none;color:rgba(255,255,255,.5);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+.mcls:hover{background:rgba(255,255,255,.13);color:#fff}
+.mbdy{padding:18px 20px 22px}
+.mpl{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;margin-bottom:10px}
+.mpl video{width:100%;height:100%;object-fit:contain}
+.mmet{font-size:12px;color:rgba(255,255,255,.32)}
+</style>
+</head>
+<body>
+<div class="topbar">Serving Western Washington &amp; Oregon Since 1980 &nbsp;·&nbsp; <a href="tel:8005419993">(800) 541-9993</a> &nbsp;·&nbsp; 24-Hour Message Line</div>
+<nav><div class="ni">
+<div class="logo" onclick="go('home')"><div class="lm">DMS</div><div><div class="lt" style="font-size:15px">Digital Music Systems</div><div class="ls">Jukeboxes · ATMs · Games</div></div></div>
+<ul class="nl">
+<li><a onclick="go('home')" id="n-home" class="on">Home</a></li>
+<li><a onclick="go('service')" id="n-service">Service</a></li>
+<li><a onclick="go('music')" id="n-music">Music</a></li>
+<li><a onclick="go('atms')" id="n-atms">ATMs</a></li>
+<li><a onclick="go('games')" id="n-games">Games</a></li>
+<li><a onclick="go('darts')" id="n-darts">Darts</a></li>
+<li><a onclick="go('trivia')" id="n-trivia">Trivia</a></li>
+<li><a onclick="go('reviews')" id="n-reviews">Reviews</a></li>
+<li><a onclick="go('about')" id="n-about">About</a></li>
+<li><a onclick="go('faq')" id="n-faq">FAQ</a></li>
+<li><a onclick="go('portal')" id="n-portal" style="color:var(--gl)">🔒 Staff</a></li>
+</ul>
+<button class="ncta" onclick="go('contact')">Get a Free Quote</button>
+<button class="hbg" onclick="document.getElementById('mob').classList.toggle('open')"><span></span><span></span><span></span></button>
+</div>
+<div class="mob" id="mob">
+<a onclick="go('home');document.getElementById('mob').classList.remove('open')">Home</a>
+<a onclick="go('service');document.getElementById('mob').classList.remove('open')">Service</a>
+<a onclick="go('music');document.getElementById('mob').classList.remove('open')">Music</a>
+<a onclick="go('atms');document.getElementById('mob').classList.remove('open')">ATMs</a>
+<a onclick="go('games');document.getElementById('mob').classList.remove('open')">Games</a>
+<a onclick="go('darts');document.getElementById('mob').classList.remove('open')">Darts</a>
+<a onclick="go('trivia');document.getElementById('mob').classList.remove('open')">Trivia</a>
+<a onclick="go('reviews');document.getElementById('mob').classList.remove('open')">Reviews</a>
+<a onclick="go('about');document.getElementById('mob').classList.remove('open')">About</a>
+<a onclick="go('faq');document.getElementById('mob').classList.remove('open')">FAQ</a>
+<a onclick="go('contact');document.getElementById('mob').classList.remove('open')">Contact</a>
+<a onclick="go('portal');document.getElementById('mob').classList.remove('open')">🔒 Staff Portal</a>
+</div></nav>
+
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+<section class="hero"><div class="hi">
+<div>
+<img src="data:image/png;base64,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" alt="Digital Music Systems (DMS) logo" style="height:58px;width:auto;background:#fff;padding:9px 16px;border-radius:12px;display:block;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.25)"/>
+<span class="eye">Est. 1980 · Seattle, WA</span>
+<h1>Jukeboxes<br/><span>ATMs</span><br/>&amp; Games</h1>
+<p class="hd">Digital Music Systems leads with outstanding service and all the latest equipment throughout Washington and Oregon. We make your venue more profitable.</p>
+<div class="hbtns"><button class="bp" onclick="go('contact')">Get a Free Quote</button><button class="bo" onclick="go('service')">Our Services</button></div>
+<div class="hstats"><div class="st"><div class="sn">1,800+</div><div class="sl">ATM Terminals</div></div><div class="st"><div class="sn">40+</div><div class="sl">Years in WA</div></div><div class="st"><div class="sn">24-HR</div><div class="sl">Message Line</div></div></div>
+</div>
+<div class="hnews"><h3>🔔 Latest Around Town</h3>
+<div class="ni2"><div class="nd2"></div><p>Maverick Gaming locations listening to great tunes across Puget Sound</p></div>
+<div class="ni2"><div class="nd2"></div><p>Western Washington Golden Tee Pro Tour — October 17–19</p></div>
+<div class="ni2"><div class="nd2"></div><p>DMS Network Round Robin Trivia continues on Tuesday nights</p></div>
+<div class="ni2"><div class="nd2"></div><p>Salt Water Saloon in Ocean Shores opens with music and games</p></div>
+</div></div></section>
+
+<section class="sec soff"><div class="si">
+<div style="text-align:center;margin-bottom:36px"><span class="slbl" style="text-align:center">What We Do</span><h2 class="stit" style="margin:0 auto">Everything Your Venue Needs</h2><div class="div" style="margin:14px auto 0"></div></div>
+<div class="cg cg3">
+<div class="card" onclick="go('music')" style="cursor:pointer"><div class="ci">🎵</div><h3>Digital Jukeboxes</h3><p>TouchTunes &amp; AMI with millions of songs. Full install at no cost to you.</p><ul><li>ASCAP, BMI &amp; SESAC licensed</li><li>Phone app integration</li><li>Background music &amp; TV sound</li></ul></div>
+<div class="card" onclick="go('atms')" style="cursor:pointer"><div class="ci">🏧</div><h3>ATM Services</h3><p>1,800+ terminals across the Pacific Northwest. No upfront cost, monthly commissions.</p><ul><li>ADA, EMV &amp; PCI compliant</li><li>No setup or upgrade costs</li><li>National placement available</li></ul></div>
+<div class="card" onclick="go('games')" style="cursor:pointer"><div class="ci">🎮</div><h3>Games &amp; Amusements</h3><p>Golden Tee, pool tables, pinball, crane games. Free placement, revenue share.</p><ul><li>PGA Tour Golden Tee Live</li><li>Crane &amp; redemption games</li><li>Coin-operated pool tables</li></ul></div>
+<div class="card" onclick="go('darts')" style="cursor:pointer"><div class="ci">🎯</div><h3>Dart Leagues</h3><p>Local, regional &amp; national soft-tip leagues with automated stats.</p><ul><li>DARTSLIVE &amp; Galaxy 3 boards</li><li>Western WA Dart League</li><li>National Tournament of Champions</li></ul></div>
+<div class="card" onclick="go('trivia')" style="cursor:pointer"><div class="ci">🧠</div><h3>Trivia / Tap TV</h3><p>No-host trivia around the clock. Weekly DMS contests with prizes drive repeat visits.</p><ul><li>Players use their phone</li><li>Tuesday night network contests</li><li>1,800+ ad templates</li></ul></div>
+</div></div></section>
+
+<section class="sec sdk"><div class="si"><div class="tc">
+<div><span class="slbl">Why DMS</span><h2 class="stit w">Service is Our Difference</h2><div class="div"></div>
+<p class="sbdy w">Any company can get you the same equipment. Our techs pride themselves on rapid response and professional installations every time.</p>
+<ul class="cl" style="margin-top:20px">
+<li><div class="ck">✓</div><span style="color:rgba(255,255,255,.8)">Same-day response keeps equipment earning</span></li>
+<li><div class="ck">✓</div><span style="color:rgba(255,255,255,.8)">24-hour message line: (800) 541-9993 — calls returned promptly</span></li>
+<li><div class="ck">✓</div><span style="color:rgba(255,255,255,.8)">7-day service with all equipment</span></li>
+<li><div class="ck">✓</div><span style="color:rgba(255,255,255,.8)">Professional installations at no cost</span></li>
+</ul>
+<button class="bp" onclick="go('contact')" style="margin-top:28px">Get a Free Quote →</button></div>
+<div class="fiw" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)">🔧</div>
+</div></div></section>
+
+<section class="sec"><div class="si">
+<div style="text-align:center;margin-bottom:36px"><span class="slbl" style="text-align:center">Happy Customers</span><h2 class="stit" style="margin:0 auto">What Our Clients Say</h2><div class="div" style="margin:14px auto 0"></div></div>
+<div class="tg">
+<div class="tc2"><p>DMS offered a new ATM at no cost. I now make more on commission than with my previous vendor. They showed up within 3 hours when I called. Fantastic value.</p><div class="ta">Taek Kim</div><div class="tb">Meeker Street Bar &amp; Grill</div></div>
+<div class="tc2"><p>Having the TouchTunes Barrel Edition at Black Fleet Brewing has been nothing short of awesome. Stunning, rugged, and fits seamlessly into our decor. Highly recommend.</p><div class="ta">Kyle Maxwell, Director of Brewing Ops</div><div class="tb">Black Fleet Brewing, Tacoma, WA</div></div>
+<div class="tc2"><p>By far DMS has proven they are the peak of professional services. The equipment is premium and ATM maintenance is spot on. I already know who I have behind me.</p><div class="ta">Theo Chung, Owner</div><div class="tb">Ricky J's &amp; Coco Joe's, WA</div></div>
+</div></div></section>
+<section class="ctab"><h2>Ready to Upgrade Your Venue?</h2><p>Free equipment placement. Professional installation. Rapid service.</p><button class="bp" onclick="go('contact')">Get a Free Quote</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- SERVICE -->
+<div class="pg" id="pg-service">
+<div class="ph"><div class="phi"><span class="slbl">Why Choose DMS</span><h1>Service</h1><p>Any company can get you the same equipment. Service is our difference.</p></div></div>
+<section class="sec"><div class="si"><div class="tc">
+<div><span class="slbl">Our Commitment</span><h2 class="stit">Rapid Response, Every Time</h2><div class="div"></div>
+<p class="sbdy">Our service techs have been installing and servicing equipment for years. Same-day response keeps our equipment working and earning.</p>
+<ul class="cl" style="margin-top:18px"><li><div class="ck">✓</div>Same-day response on most service calls</li><li><div class="ck">✓</div>Usually at your location within 24 hours</li><li><div class="ck">✓</div>7-day service with all placements</li><li><div class="ck">✓</div>Professional installation at no charge</li></ul></div>
+<div><div style="background:var(--gd);border-radius:14px;padding:32px;text-align:center;margin-bottom:18px"><p style="font-size:11px;font-weight:700;color:var(--nd);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">24-Hour Message Line</p><a href="tel:8005419993" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--nd);letter-spacing:2px">(800) 541-9993</a><p style="font-size:12px;color:var(--nd);margin-top:6px;font-weight:600">Leave a message anytime — calls returned promptly</p></div>
+<div class="cg cg2" style="margin-top:0"><div class="card"><div class="ci">⚡</div><h3>Same Day</h3><p>Same-day response for most service needs in our coverage area.</p></div><div class="card"><div class="ci">🛡️</div><h3>7-Day</h3><p>Service 7 days a week — we don't leave you stranded on weekends.</p></div></div></div>
+</div></div></section>
+<section class="ctab"><h2>Need Service or New Equipment?</h2><p>Call our 24-hour message line or fill out our contact form.</p><button class="bp" onclick="go('contact')">Contact Us</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- MUSIC -->
+<div class="pg" id="pg-music">
+<div class="ph"><div class="phi"><span class="slbl">Digital Jukeboxes</span><h1>Music</h1><p>Keep customers engaged and staying longer with TouchTunes &amp; AMI jukeboxes.</p></div></div>
+<section class="sec"><div class="si">
+<div class="tc"><div><span class="badge">🎵 TouchTunes</span><h2 class="stit" style="margin-top:14px">TouchTunes Music</h2><div class="div"></div>
+<p class="sbdy">We partner with breweries, restaurants and bars to create a custom music program with full sound system installations — at no cost.</p>
+<ul class="cl" style="margin-top:16px"><li><div class="ck">✓</div>Jukeboxes earn revenue &amp; keep customers longer</li><li><div class="ck">✓</div>Phone apps increase revenue</li><li><div class="ck">✓</div>Fully licensed — ASCAP, BMI &amp; SESAC</li><li><div class="ck">✓</div>Background music &amp; TV sound included</li></ul></div>
+<div class="fiw">🎶</div></div>
+<div class="tc fl" style="margin-top:60px"><div><span class="badge">🎵 AMI Music</span><h2 class="stit" style="margin-top:14px">AMI ATOM Jukebox</h2><div class="div"></div>
+<p class="sbdy">Small in size (20"×33") but big on excitement. Clean screens and an awesome light scheme attracts customers.</p>
+<ul class="cl" style="margin-top:16px"><li><div class="ck">✓</div>Phone app with video music playback</li><li><div class="ck">✓</div>Create Ad Screens to market your specials</li><li><div class="ck">✓</div>Fully licensed — ASCAP, BMI &amp; SESAC</li><li><div class="ck">✓</div>AMI Copilot app for content control</li></ul></div>
+<div class="fiw">🎼</div></div>
+</div></section>
+<section class="ctab"><h2>Get a Free Jukebox Installation</h2><p>We own, operate, and install. You earn commissions. Zero upfront cost.</p><button class="bp" onclick="go('contact')">Request Installation</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- ATMS -->
+<div class="pg" id="pg-atms">
+<div class="ph"><div class="phi"><span class="slbl">ATM Placement &amp; Management</span><h1>ATMs</h1><p>One of the largest ATM operators in the Pacific Northwest — 1,800+ terminals strong. Our ATM business operates under the trade name DMS, Inc.</p></div></div>
+<section class="sec"><div class="si"><div class="tc">
+<div><span class="slbl">Full-Service ATM Management</span><h2 class="stit">Cash on Demand</h2><div class="div"></div>
+<p class="sbdy">State-of-the-art equipment, no upfront cost, programs tailored to your needs.</p>
+<ul class="cl" style="margin-top:16px"><li><div class="ck">✓</div>No upfront cost to your business</li><li><div class="ck">✓</div>ADA, EMV &amp; PCI compliant</li><li><div class="ck">✓</div>7-day service &amp; monitoring</li><li><div class="ck">✓</div>Commissions paid monthly</li><li><div class="ck">✓</div>Free upgrades — never pay for a new machine</li><li><div class="ck">✓</div>National placement available</li></ul></div>
+<div><div class="cg cg2" style="margin-top:0"><div class="card"><div class="ci">🏪</div><h3>Any Location</h3><p>Bars, restaurants, hotels, retail, cannabis stores, events &amp; fairs.</p></div><div class="card"><div class="ci">💰</div><h3>Cash Loading</h3><p>We fill our machine — or we fill yours. Flexible programs available.</p></div><div class="card"><div class="ci">🛒</div><h3>Buy a Machine</h3><p>We sell, program, install and train. Ready to earn from day one.</p></div><div class="card"><div class="ci">🌐</div><h3>Nationwide</h3><p>We service ATMs in any state — not just the Pacific Northwest.</p></div></div>
+<div style="background:var(--gd);border-radius:14px;padding:22px;margin-top:18px;text-align:center"><p style="font-size:11px;font-weight:700;color:var(--nd);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Free Quote</p><a href="tel:8005419993" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--nd);display:block">(800) 541-9993</a><a href="mailto:info@dmswa.com" style="font-size:13px;color:var(--nv);font-weight:600">info@dmswa.com</a></div></div>
+</div></div></section>
+<section class="ctab"><h2>Place an ATM in Your Business Today</h2><p>No cost, no hassle. We handle everything — you earn monthly commissions.</p><button class="bp" onclick="go('contact')">Get a Free Quote</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- GAMES -->
+<div class="pg" id="pg-games">
+<div class="ph"><div class="phi"><span class="slbl">Amusement Games</span><h1>Games</h1><p>Promotions and tournaments that keep your customers coming back.</p></div></div>
+<section class="sec"><div class="si">
+<div style="text-align:center;max-width:580px;margin:0 auto 36px"><span class="slbl" style="text-align:center">Free Placement Program</span><h2 class="stit" style="margin:0 auto">We'll Find the Right Mix</h2><div class="div" style="margin:14px auto 0"></div></div>
+<div class="cg cg3"><div class="card"><div class="ci">⛳</div><h3>Golden Tee Live</h3><p>PGA Tour Golden Tee with WWGT promotions. One of the most profitable games in the industry.</p></div><div class="card"><div class="ci">🎳</div><h3>Pool Tables</h3><p>Coin-operated pool tables — keeps customers playing and ordering longer.</p></div><div class="card"><div class="ci">🦆</div><h3>Crane Machines</h3><p>Win-every-time ducks and toys plus chance games with big cash boxes.</p></div><div class="card"><div class="ci">🎯</div><h3>Dart Boards</h3><p>Soft-tip dart boards with internet-connected league play built in.</p></div><div class="card"><div class="ci">🕹️</div><h3>Pinball</h3><p>Classic and modern pinball machines that attract a loyal repeat customer base.</p></div><div class="card"><div class="ci">📋</div><h3>Custom Mix</h3><p>Not sure what fits? Call us — we'll assess your space and recommend the right combo.</p></div></div>
+</div></section>
+<section class="ctab"><h2>Free Equipment. Revenue Sharing.</h2><p>We deliver, install, and service. You split the revenue. No risk.</p><button class="bp" onclick="go('contact')">Talk to Us</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- DARTS -->
+<div class="pg" id="pg-darts">
+<div class="ph"><div class="phi"><span class="slbl">Soft-Tip Dart Leagues</span><h1>Darts</h1><p>Local, regional, and national leagues — all from your favorite bar.</p></div></div>
+<section class="sec"><div class="si"><div class="tc">
+<div><span class="slbl">Western WA Dart League</span><h2 class="stit">Leagues &amp; Tournaments</h2><div class="div"></div>
+<p class="sbdy">Internet-connected boards track everything automatically. Local, regional, and national leagues all year long.</p>
+<ul class="cl" style="margin-top:16px"><li><div class="ck">✓</div>Local and in-house leagues</li><li><div class="ck">✓</div>Regional leagues with tournaments</li><li><div class="ck">✓</div>National — Tournament of Champions, Kansas City</li><li><div class="ck">✓</div>Automated stats &amp; results posted instantly</li><li><div class="ck">✓</div>Payouts to winners at end of season</li></ul>
+<a class="bp" href="https://westernwadartleague.com/" target="_blank" style="margin-top:24px;display:inline-block">Western WA Dart League →</a></div>
+<div><div class="card" style="margin-bottom:16px"><div class="ci">🎯</div><h3>DARTSLIVE</h3><p>Play against friends down the street or around the world in real time. Track your rating with the Dartslive player card.</p></div>
+<div class="card"><div class="ci">🌐</div><h3>PPD — Galaxy 3 Boards</h3><p>Remote leagues and daily tournaments in all locations. Play in 16-team flights over an internet connection.</p><a href="https://www.dartstoc.com/" target="_blank" style="display:inline-block;margin-top:10px;font-size:13px;font-weight:600;color:var(--nv)">Darts TOC →</a></div></div>
+</div></div></section>
+<section class="ctab"><h2>Add Darts to Your Venue</h2><p>Free boards, leagues built in, players who come back every week.</p><button class="bp" onclick="go('contact')">Get Started</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- TRIVIA -->
+<div class="pg" id="pg-trivia">
+<div class="ph"><div class="phi"><span class="slbl">AMI Trivia / Tap TV</span><h1>Trivia</h1><p>Trivia brings in customers and keeps them longer — no host required.</p></div></div>
+<section class="sec"><div class="si"><div class="tc">
+<div><span class="badge">🧠 Also known as Tap TV</span><h2 class="stit" style="margin-top:14px">On-Screen Trivia, 24/7</h2><div class="div"></div>
+<p class="sbdy">On-screen trivia runs 24/7. Patrons play in real time using their phone. Local and national scoring every round.</p>
+<ul class="cl" style="margin-top:16px"><li><div class="ck">✓</div>No host needed — the game runs itself</li><li><div class="ck">✓</div>Players use their phone, scores on screen</li><li><div class="ck">✓</div>Local and national scoring every round</li><li><div class="ck">✓</div>Tuesday night network contests vs other NW locations</li></ul></div>
+<div><div class="card" style="margin-bottom:16px"><div class="ci">📺</div><h3>Advertise on Screen</h3><p>Create ads with 1,800+ templates. Promote events, food specials, and drink promos to every player in the room.</p></div>
+<div style="background:var(--nv);border-radius:14px;padding:22px;color:#fff"><h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1.5px;color:var(--gl);margin-bottom:7px">Join the NW Group</h4><p style="font-size:13px;color:rgba(255,255,255,.58)">Tap TV Northwest Group on Facebook for results, contests and updates.</p><a href="https://www.facebook.com/groups/967581336587019/" target="_blank" style="display:inline-block;margin-top:9px;font-size:13px;color:var(--gl);font-weight:600">Facebook Group →</a></div></div>
+</div></div></section>
+<section class="ctab"><h2>Add Trivia to Your Venue</h2><p>No host. No hassle. Customers who stay longer and come back every Tuesday.</p><button class="bp" onclick="go('contact')">Learn More</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- REVIEWS -->
+<div class="pg" id="pg-reviews">
+<div class="ph"><div class="phi"><span class="slbl">Customer Reviews</span><h1>Testimonials</h1><p>Hear from bar owners, brewers, and restaurateurs who rely on DMS.</p></div></div>
+<section class="sec"><div class="si"><div class="tg">
+<div class="tc2"><p>DMS offered a new ATM at no cost and still let me use my own cash to load it. I now make more on commission than my previous vendor — in the past I paid $5,000 out of pocket. They showed up within 3 hours when I called. Fantastic value.</p><div class="ta">Taek Kim</div><div class="tb">Meeker Street Bar &amp; Grill</div></div>
+<div class="tc2"><p>Having the TouchTunes Barrel Edition at Black Fleet Brewing has been nothing short of awesome. It empowers our customers to play their favorite music while removing the stress of licensed entertainment. Highly recommend.</p><div class="ta">Kyle Maxwell, Director of Brewing Ops</div><div class="tb">Black Fleet Brewing, Tacoma, WA</div></div>
+<div class="tc2"><p>I have used multiple vendors and by far DMS has proven they are the peak of professional services. They respond with urgency, the equipment is premium, and ATM maintenance is spot on. I already know who I have behind me. DMS!</p><div class="ta">Theo Chung, Owner</div><div class="tb">Ricky J's, Frederickson &amp; Coco Joe's, Algona, WA</div></div>
+</div></div></section>
+<section class="ctab"><h2>Join Hundreds of Happy Venues</h2><p>Let's find the right equipment mix for your space — no cost, no risk.</p><button class="bp" onclick="go('contact')">Get a Free Quote</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- ABOUT -->
+<div class="pg" id="pg-about">
+<div class="ph"><div class="phi"><span class="slbl">Est. 1980 · Seattle, WA</span><h1>About DMS</h1><p>A local, family-owned company serving Washington venues for over 40 years.</p></div></div>
+<section class="sec"><div class="si"><div class="tc">
+<div><span class="slbl">Our Story</span><h2 class="stit">Digital Music Systems — Known Across the Industry</h2><div class="div"></div>
+<p class="sbdy">We started as a local, family-owned video game company in 1980. Throughout the industry, we're known as Digital Music Systems — and we've expanded far beyond music. DMS, Inc. is the trade name we use for our ATM business.</p>
+<div style="position:relative;padding-left:28px;margin-top:28px"><div style="position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--bd)"></div>
+<div style="position:relative;margin-bottom:22px"><div style="position:absolute;left:-25px;top:5px;width:10px;height:10px;background:var(--gd);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 3px var(--gd)"></div><h4 style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--nv);letter-spacing:1px;margin-bottom:3px">1980 — Founded</h4><p style="font-size:13px;color:var(--gr)">Local, family-owned video game company in Seattle, WA.</p></div>
+<div style="position:relative;margin-bottom:22px"><div style="position:absolute;left:-25px;top:5px;width:10px;height:10px;background:var(--gd);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 3px var(--gd)"></div><h4 style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--nv);letter-spacing:1px;margin-bottom:3px">Music Era</h4><p style="font-size:13px;color:var(--gr)">Expanded into digital music — became Digital Music Systems.</p></div>
+<div style="position:relative;margin-bottom:22px"><div style="position:absolute;left:-25px;top:5px;width:10px;height:10px;background:var(--gd);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 3px var(--gd)"></div><h4 style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--nv);letter-spacing:1px;margin-bottom:3px">ATMs &amp; Amusements</h4><p style="font-size:13px;color:var(--gr)">Grew to 1,800+ ATM terminals across the Pacific Northwest.</p></div>
+<div style="position:relative"><div style="position:absolute;left:-25px;top:5px;width:10px;height:10px;background:var(--gd);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 3px var(--gd)"></div><h4 style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--nv);letter-spacing:1px;margin-bottom:3px">Today — Digital Music Systems</h4><p style="font-size:13px;color:var(--gr)">Jukeboxes, ATMs, games, darts, and trivia — with DMS, Inc. as our ATM trade name.</p></div>
+</div></div>
+<div><div class="cg cg2" style="margin-top:0"><div class="card"><div class="ci">🏆</div><h3>40+ Years</h3><p>Four decades serving Washington and Oregon venues.</p></div><div class="card"><div class="ci">🏧</div><h3>1,800+ ATMs</h3><p>One of the largest ATM operators in the Pacific Northwest.</p></div><div class="card"><div class="ci">🌲</div><h3>Pacific NW</h3><p>Western WA, Western OR, Chelan, Yakima &amp; Tri-Cities.</p></div><div class="card"><div class="ci">🤝</div><h3>Family Owned</h3><p>Still a local, independent company — not a national chain.</p></div></div></div>
+</div></div></section>
+<section class="ctab"><h2>Work With a Company That Cares</h2><p>40+ years means we know what works for venues like yours.</p><button class="bp" onclick="go('contact')">Get in Touch</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+<!-- FAQ -->
+<div class="pg" id="pg-faq">
+<div class="ph"><div class="phi"><span class="slbl">Got Questions?</span><h1>FAQ</h1><p>Everything you need to know about our equipment, services, and programs.</p></div></div>
+<section class="sec"><div class="si"><div style="max-width:760px;margin:0 auto">
+<div class="fg"><div class="fgt">🔧 General</div>
+<div class="fi"><button class="fq" onclick="faq(this)">What areas do you service?<span class="ar">▾</span></button><div class="fa"><p>Western Washington, Western Oregon, Chelan County, Yakima and Tri-Cities. ATMs serviced nationally.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">Who maintains the equipment?<span class="ar">▾</span></button><div class="fa"><p>DMS employs experienced technicians. Call us with service needs and we come to your location.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">How long does a repair take?<span class="ar">▾</span></button><div class="fa"><p>Usually we are at your location within 24 hours.</p></div></div>
+</div>
+<div class="fg"><div class="fgt">🎵 Music</div>
+<div class="fi"><button class="fq" onclick="faq(this)">What is a downloading jukebox?<span class="ar">▾</span></button><div class="fa"><p>A TouchTunes or AMI digital jukebox uses a hard drive instead of CDs. Customers select music on a touchscreen or phone app. Typically wall-mounted to save space.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">How much does installation cost?<span class="ar">▾</span></button><div class="fa"><p>We own and operate the complete sound system — installed in your business at no cost to you.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">Is the music licensed?<span class="ar">▾</span></button><div class="fa"><p>Yes. We handle ASCAP, BMI, and SESAC — you don't pay the annual fees.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">Do we control the music?<span class="ar">▾</span></button><div class="fa"><p>Yes — screen out genres, schedule music by time of day, and create themed promotions.</p></div></div>
+</div>
+<div class="fg"><div class="fgt">🎮 Games &amp; Darts</div>
+<div class="fi"><button class="fq" onclick="faq(this)">What kind of games do you have?<span class="ar">▾</span></button><div class="fa"><p>Crane games, video games, dart boards, pool tables, pinball machines, and on-screen trivia.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">How much do games cost to place?<span class="ar">▾</span></button><div class="fa"><p>We own and operate the equipment — placement is free and delivered to your location.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">Do you have dart leagues?<span class="ar">▾</span></button><div class="fa"><p>Yes — Western Washington Dart Leagues runs local, regional, and national leagues all year long.</p></div></div>
+</div>
+<div class="fg"><div class="fgt">🏧 ATMs</div>
+<div class="fi"><button class="fq" onclick="faq(this)">Where do you operate ATMs?<span class="ar">▾</span></button><div class="fa"><p>Bars, restaurants, hotels, retail, cannabis stores, tattoo shops, events, fairs — anywhere people need cash. Nationally for ATMs.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">Can I buy a machine from you?<span class="ar">▾</span></button><div class="fa"><p>Absolutely. We sell, program, install, and train you. Ready to earn from day one.</p></div></div>
+<div class="fi"><button class="fq" onclick="faq(this)">What if I don't want to fill the machine myself?<span class="ar">▾</span></button><div class="fa"><p>We have a program where we fill our machine, or we fill yours. Call us to find the right fit.</p></div></div>
+</div>
+</div></div></section>
+<section class="ctab"><h2>Still Have Questions?</h2><p>Our team is happy to answer anything.</p><button class="bp" onclick="go('contact')">Contact Us</button><a class="bo" href="tel:8005419993">📞 (800) 541-9993</a></section>
+</div>
+
+<!-- CONTACT -->
+<div class="pg" id="pg-contact">
+<div class="ph"><div class="phi"><span class="slbl">Get In Touch</span><h1>Contact</h1><p>Ready to add equipment or need service? Reach out and we'll respond fast.</p></div></div>
+<section class="sec"><div class="si"><div class="cgrid">
+<div class="cic"><h3>Contact Digital Music Systems</h3>
+<div class="cr"><div class="cico">📞</div><div><strong>Phone / 24-Hr Message Line</strong><a href="tel:8005419993">(800) 541-9993</a></div></div>
+<div class="cr"><div class="cico">✉️</div><div><strong>Email</strong><a href="mailto:info@dmswa.com">info@dmswa.com</a></div></div>
+<div class="cr"><div class="cico">📍</div><div><strong>Service Area</strong><p>Western WA, Western OR, Chelan County, Yakima, Tri-Cities</p></div></div>
+<div class="cr"><div class="cico">🕐</div><div><strong>Hours</strong><p>Leave a message anytime, day or night — calls are returned promptly during business hours</p></div></div>
+<div class="cr"><div class="cico">📘</div><div><strong>Facebook</strong><a href="https://www.facebook.com/digitalmusicsystems/" target="_blank">@digitalmusicsystems</a></div></div>
+</div>
+<div class="cfw">
+<h3 style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--nv);margin-bottom:20px">Send Us a Message</h3>
+<div class="fr"><div class="fg2"><label>First Name</label><input type="text" placeholder="John" id="cf1"/></div><div class="fg2"><label>Last Name</label><input type="text" placeholder="Smith" id="cf2"/></div></div>
+<div class="fg2"><label>Business Name</label><input type="text" placeholder="My Bar &amp; Grill" id="cf3"/></div>
+<div class="fg2"><label>Phone</label><input type="tel" placeholder="(206) 555-0100" id="cf4"/></div>
+<div class="fg2" style="display:flex;gap:10px;align-items:flex-start;background:#fff;border:1.5px solid var(--bd);border-radius:9px;padding:12px 13px"><input type="checkbox" id="cfsms" style="width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--nv)"/><label for="cfsms" style="margin:0;font-weight:400;font-size:12px;color:var(--gr);line-height:1.55;cursor:pointer">I agree to receive text messages from Digital Music Systems at the phone number provided. Message frequency varies, message &amp; data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of purchase. See our <a onclick="event.preventDefault();go('privacy')" style="color:var(--nv);font-weight:600;cursor:pointer;text-decoration:underline">Privacy Policy</a>.</label></div>
+<div class="fg2"><label>Email</label><input type="email" placeholder="you@business.com" id="cf5"/></div>
+<div class="fg2"><label>I'm Interested In</label><select id="cf6"><option>Jukeboxes / Music</option><option>ATM Placement</option><option>Games &amp; Amusements</option><option>Dart Leagues</option><option>Trivia / Tap TV</option><option>Multiple Services</option><option>Service / Repair</option></select></div>
+<div class="fg2"><label>Message</label><textarea placeholder="Tell us about your venue and what you need..." id="cf7"></textarea></div>
+<button class="fsub" onclick="submitForm()">Send Message →</button>
+<div id="cfsuc" style="display:none;margin-top:14px;background:rgba(30,180,100,.1);border:1px solid rgba(30,180,100,.22);border-radius:9px;padding:14px;font-size:13px;color:#1db87a;text-align:center">✅ Message sent! We'll be in touch. Or call (800) 541-9993 for immediate help.</div>
+</div>
+</div></div></section>
+</div>
+
+<!-- PRIVACY POLICY -->
+<div class="pg" id="pg-privacy">
+<div class="ph"><div class="phi"><span class="slbl">Your Information</span><h1>Privacy Policy</h1><p>How Digital Music Systems collects, uses, and protects your information.</p></div></div>
+<section class="sec"><div class="si"><div style="max-width:760px;margin:0 auto">
+<p style="font-size:13px;color:var(--gr);margin-bottom:28px">Last updated: July 2026</p>
+
+<h2 class="stit" style="font-size:24px">Who We Are</h2>
+<p class="sbdy" style="max-width:none;margin-bottom:28px">Digital Music Systems ("we," "us," "our") provides jukeboxes, ATMs, amusement games, dart leagues, and trivia services throughout Washington and Oregon. DMS, Inc. is the trade name we use for our ATM business. This Privacy Policy applies to information collected through our website, dmswa.com, and through communications with us.</p>
+
+<h2 class="stit" style="font-size:24px">Information We Collect</h2>
+<p class="sbdy" style="max-width:none;margin-bottom:28px">When you fill out our contact form, we collect the information you provide: your name, business name, phone number, email address, and the details of your message. We use this information solely to respond to your inquiry, provide our services, and communicate with you about your account or equipment.</p>
+
+<h2 class="stit" style="font-size:24px">How We Use Your Information</h2>
+<p class="sbdy" style="max-width:none;margin-bottom:28px">We use the information you provide to respond to inquiries, schedule service and installations, process quotes, and keep you informed about services you've requested. We do not sell your personal information. We do not share your personal information with third parties for their marketing purposes.</p>
+
+<h2 class="stit" style="font-size:24px">Text (SMS) Messaging Program</h2>
+<p class="sbdy" style="max-width:none;margin-bottom:14px">Digital Music Systems offers text messaging to communicate with customers about inquiries, quotes, service appointments, and account-related updates. By checking the text messaging consent box on our contact form and providing your phone number, you agree to receive text messages from Digital Music Systems at the number provided.</p>
+<ul class="cl" style="margin-bottom:14px">
+<li><div class="ck">✓</div>Consent to receive text messages is not a condition of purchasing any goods or services.</li>
+<li><div class="ck">✓</div>Message frequency varies based on your interaction with us.</li>
+<li><div class="ck">✓</div>Message and data rates may apply depending on your mobile carrier and plan.</li>
+<li><div class="ck">✓</div>Reply <strong>&nbsp;STOP&nbsp;</strong> at any time to opt out of receiving text messages.</li>
+<li><div class="ck">✓</div>Reply <strong>&nbsp;HELP&nbsp;</strong> for assistance, or contact us at <a href="mailto:info@dmswa.com" style="color:var(--nv);font-weight:600">info@dmswa.com</a> or (800) 541-9993.</li>
+<li><div class="ck">✓</div>Your phone number and text messaging opt-in data will not be shared with third parties or affiliates for marketing purposes.</li>
+</ul>
+<div style="background:var(--of);border:1px solid var(--bd);border-radius:12px;padding:20px;margin-bottom:28px"><p style="font-size:14px;color:var(--tx);line-height:1.7"><strong>Text Message Terms:</strong> By opting in to receive text messages from Digital Music Systems, you agree to receive informational and service-related messages at the phone number provided. Message frequency varies. Message and data rates may apply. Reply STOP to cancel or HELP for help.</p></div>
+
+<h2 class="stit" style="font-size:24px">Contact Us</h2>
+<p class="sbdy" style="max-width:none">If you have questions about this Privacy Policy or how your information is handled, contact us at <a href="mailto:info@dmswa.com" style="color:var(--nv);font-weight:600">info@dmswa.com</a> or call (800) 541-9993.</p>
+</div></div></section>
+</div>
+
+<!-- STAFF PORTAL -->
+<div class="pg" id="pg-portal">
+<div class="pw">
+<div class="plw" id="plw">
+<div class="plc">
+<div class="pll"><div class="plm">DMS</div><h2>Staff Portal</h2><p class="sub">DMS, Inc. Employee Access</p></div>
+<div class="perr" id="perr">Incorrect email or password.</div>
+<div class="pf"><label>Email Address</label><input type="email" id="lem" placeholder="you@dmswa.com" onkeydown="if(event.key==='Enter')login()"/></div>
+<div class="pf"><label>Password</label><input type="password" id="lpw" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"/></div>
+<button class="plb" onclick="login()">Sign In →</button>
+<div class="pdemo"><div>Demo Accounts</div><table><tr><td>Email:</td><td>admin@dmswa.com</td></tr><tr><td>Pass:</td><td>dms2024</td></tr><tr><td style="padding-top:4px">Email:</td><td style="padding-top:4px">staff@dmswa.com</td></tr><tr><td>Pass:</td><td>staff123</td></tr></table></div>
+</div>
+</div>
+<div class="pdash" id="pdash">
+<div class="pdh"><div class="pdhi">
+<div class="pdb2"><div class="pbm">DMS</div><div><div class="pbn">Staff Portal</div><div class="pbs">Internal Use Only</div></div></div>
+<div class="pdacts"><button class="abtn" onclick="go('home')">← Back to Website</button><span class="pdun" id="pdun"></span><button class="gbtn" onclick="logout()">Sign Out</button></div>
+</div></div>
+<div class="pdbody">
+<div class="ptabs"><button class="ptab on" onclick="ptab('watch')">▶ Watch Videos</button><button class="ptab" onclick="ptab('upload')">⬆ Upload</button></div>
+<div class="ppan on" id="pp-watch">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+<div><h2 style="font-size:19px;font-weight:600;color:#fff;margin-bottom:2px">Video Library</h2><p style="font-size:12px;color:rgba(255,255,255,.32)" id="vcnt">0 videos</p></div>
+<input type="text" placeholder="🔍 Search..." id="vsrch" oninput="renderV()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:8px 13px;color:#fff;font-size:13px;width:200px;outline:none;font-family:inherit"/>
+</div>
+<div class="vg" id="vg"><div class="emp"><span>📹</span><p>No videos yet. Upload the first one!</p></div></div>
+</div>
+<div class="ppan" id="pp-upload">
+<h2 style="font-size:19px;font-weight:600;color:#fff;margin-bottom:3px">Upload a Video</h2>
+<p style="font-size:13px;color:rgba(255,255,255,.32);margin-bottom:20px">MP4, MOV, AVI, WebM</p>
+<div style="margin-bottom:12px"><label style="font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.38);display:block;margin-bottom:6px">Video Title</label><input type="text" id="utit" placeholder="e.g. Q3 Training, ATM Install Demo..." style="width:100%;max-width:500px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);border-radius:9px;padding:11px 14px;color:#fff;font-size:13px;font-family:inherit;outline:none"/></div>
+<div class="upz" id="upz"><input type="file" accept="video/*" id="ufi" onchange="upfile(this)"/><div style="font-size:40px;margin-bottom:10px">🎬</div><h3 style="font-size:16px;color:#fff;margin-bottom:5px">Drop your video here</h3><p style="font-size:13px;color:rgba(255,255,255,.32)">or click to browse files</p></div>
+<div class="upp" id="upp"><div style="display:flex;align-items:center;gap:10px;margin-bottom:7px"><span style="font-size:24px">🎞️</span><div><div style="font-size:13px;color:#fff;font-weight:500" id="upn">—</div><div style="font-size:11px;color:rgba(255,255,255,.32)" id="ups">—</div></div></div><div class="ptrack"><div class="pfill" id="pfl"></div></div><p style="font-size:12px;color:rgba(255,255,255,.32);margin-top:6px" id="plbl">Uploading...</p></div>
+<div class="uok" id="uok"><span style="font-size:20px">✅</span>Video uploaded! It's now in the library.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="fi2">
+<div class="fb"><div style="display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;background:var(--gd);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--nd)">DMS</div><span style="font-family:'Bebas Neue',sans-serif;font-size:15px;color:#fff;letter-spacing:2px">Digital Music Systems</span></div><p>Jukeboxes, ATMs, games, darts, and trivia throughout Washington and Oregon. Est. 1980 in Seattle, WA. DMS, Inc. is the trade name for our ATM business.</p><p style="margin-top:9px"><a href="tel:8005419993" style="color:var(--gl);font-weight:700">(800) 541-9993</a></p></div>
+<div class="fc"><h4>Services</h4><a onclick="go('music')">Music</a><a onclick="go('atms')">ATMs</a><a onclick="go('games')">Games</a><a onclick="go('darts')">Darts</a><a onclick="go('trivia')">Trivia</a></div>
+<div class="fc"><h4>Company</h4><a onclick="go('about')">About</a><a onclick="go('service')">Service</a><a onclick="go('reviews')">Testimonials</a><a onclick="go('faq')">FAQ</a><a onclick="go('privacy')">Privacy Policy</a></div>
+<div class="fc"><h4>Contact</h4><a href="tel:8005419993">(800) 541-9993</a><a href="mailto:info@dmswa.com">info@dmswa.com</a><a onclick="go('contact')">Contact Form</a><a onclick="go('portal')" style="color:rgba(240,165,0,.55)">🔒 Staff Portal</a></div>
+</div>
+<div class="fbot"><div class="fboti"><span>© 2026 Digital Music Systems · DMS, Inc. All rights reserved.</span><span>Serving WA &amp; OR since 1980</span></div></div>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeM()">
+<div class="minn"><div class="mhdr"><span id="mtit">—</span><button class="mcls" onclick="closeM()">✕</button></div>
+<div class="mbdy"><div class="mpl"><video id="mvid" controls></video></div><div class="mmet" id="mmet"></div></div></div>
+</div>
+
+<script>
+var ACCTS={'admin@dmswa.com':{p:'dms2024',n:'Admin (Ashley)'},'staff@dmswa.com':{p:'staff123',n:'Staff Member'}};
+var cu=null,vids=[];
+
+function go(id){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.nl a').forEach(function(a){a.classList.remove('on')});
+  var pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('on');
+  var nl=document.getElementById('n-'+id);if(nl)nl.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='portal')initPortal();
+}
+
+function faq(btn){
+  var a=btn.nextElementSibling,open=a.classList.contains('op');
+  document.querySelectorAll('.fa.op').forEach(function(x){x.classList.remove('op')});
+  document.querySelectorAll('.fq.op').forEach(function(x){x.classList.remove('op')});
+  if(!open){a.classList.add('op');btn.classList.add('op')}
+}
+
+function submitForm(){
+  var e=document.getElementById('cf5').value.trim(),n=document.getElementById('cf1').value.trim();
+  if(!n||!e){alert('Please fill in your name and email.');return}
+  document.getElementById('cfsuc').style.display='block';
+  ['cf1','cf2','cf3','cf4','cf5','cf7'].forEach(function(id){document.getElementById(id).value=''});
+  document.getElementById('cfsms').checked=false;
+}
+
+function initPortal(){
+  document.getElementById('plw').style.display=cu?'none':'flex';
+  document.getElementById('pdash').style.display=cu?'block':'none';
+}
+
+function login(){
+  var e=document.getElementById('lem').value.trim().toLowerCase();
+  var p=document.getElementById('lpw').value;
+  var err=document.getElementById('perr');
+  if(ACCTS[e]&&ACCTS[e].p===p){
+    cu={e:e,n:ACCTS[e].n};err.classList.remove('on');
+    document.getElementById('plw').style.display='none';
+    document.getElementById('pdash').style.display='block';
+    document.getElementById('pdun').textContent=cu.n;
+    renderV();
+  }else{err.classList.add('on')}
+}
+
+function logout(){
+  cu=null;
+  document.getElementById('pdash').style.display='none';
+  document.getElementById('plw').style.display='flex';
+  document.getElementById('lem').value='';
+  document.getElementById('lpw').value='';
+}
+
+function ptab(t){
+  document.querySelectorAll('.ptab').forEach(function(b,i){b.classList.toggle('on',(i===0&&t==='watch')||(i===1&&t==='upload'))});
+  document.getElementById('pp-watch').classList.toggle('on',t==='watch');
+  document.getElementById('pp-upload').classList.toggle('on',t==='upload');
+}
+
+function renderV(){
+  var q=(document.getElementById('vsrch').value||'').toLowerCase();
+  var f=vids.filter(function(v){return v.t.toLowerCase().includes(q)});
+  var g=document.getElementById('vg');
+  document.getElementById('vcnt').textContent=vids.length+' video'+(vids.length!==1?'s':'');
+  if(!f.length){g.innerHTML='<div class="emp"><span>'+(vids.length?'🔍':'📹')+'</span><p>'+(vids.length?'No results.':'No videos yet. Upload the first one!')+'</p></div>';return}
+  g.innerHTML=f.map(function(v){
+    var i=vids.indexOf(v);
+    return '<div class="vc" onclick="openV('+i+')">'
+      +'<div class="vth"><span>'+v.em+'</span><div class="vtho"><div class="vpc">▶</div></div></div>'
+      +'<div class="vinfo"><div class="vtit">'+v.t.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</div>'
+      +'<div class="vmet"><span>📅 '+v.d+'</span><span>📦 '+v.s+'</span></div>'
+      +'<div class="vup">'+v.u+'</div></div></div>';
+  }).join('');
+}
+
+function openV(i){
+  var v=vids[i];if(!v)return;
+  document.getElementById('mtit').textContent=v.t;
+  document.getElementById('mmet').textContent='Uploaded by '+v.u+' · '+v.d+' · '+v.s;
+  var vid=document.getElementById('mvid');vid.src=v.url;
+  document.getElementById('modal').classList.add('on');vid.play();
+}
+
+function closeM(){
+  document.getElementById('modal').classList.remove('on');
+  var v=document.getElementById('mvid');v.pause();v.src='';
+}
+
+var EMS=['🎬','📹','🎥','🎞️','📽️'];
+
+function upfile(inp){
+  var f=inp.files[0];if(!f)return;
+  var tit=document.getElementById('utit').value.trim()||f.name.replace(/\.[^.]+$/,'');
+  var upp=document.getElementById('upp'),pfl=document.getElementById('pfl'),plbl=document.getElementById('plbl'),uok=document.getElementById('uok');
+  document.getElementById('upn').textContent=f.name;
+  document.getElementById('ups').textContent=fmtS(f.size);
+  upp.style.display='block';uok.style.display='none';pfl.style.width='0%';plbl.textContent='Uploading...';
+  var pct=0,iv=setInterval(function(){
+    pct+=Math.random()*13+4;
+    if(pct>=100){pct=100;clearInterval(iv);plbl.textContent='Processing...';
+      setTimeout(function(){
+        vids.unshift({t:tit,url:URL.createObjectURL(f),s:fmtS(f.size),d:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),u:cu?cu.n:'Staff',em:EMS[Math.floor(Math.random()*EMS.length)]});
+        upp.style.display='none';uok.style.display='flex';
+        document.getElementById('utit').value='';inp.value='';renderV();
+      },500);
+    }
+    pfl.style.width=pct+'%';
+  },160);
+}
+
+function fmtS(b){return b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB'}
+
+var uz=document.getElementById('upz');
+uz.addEventListener('dragover',function(e){e.preventDefault();uz.classList.add('ov')});
+uz.addEventListener('dragleave',function(){uz.classList.remove('ov')});
+uz.addEventListener('drop',function(e){
+  e.preventDefault();uz.classList.remove('ov');
+  var f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('video/')){document.getElementById('ufi').files=e.dataTransfer.files;upfile(document.getElementById('ufi'))}
+});
+</script>
+</body>
+</html>
